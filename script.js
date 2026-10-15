@@ -131,7 +131,13 @@ function parseLocalDate(str){
   const [y, m, d] = str.split('-').map(Number);
   return new Date(y, m - 1, d);
 }
+// For testing: add ?preview=2026-10-16 to the URL and the site behaves as
+// if it's that day. The plain link she gets always uses the real date.
+const PREVIEW_DATE = (new URLSearchParams(location.search).get('preview') || '')
+  .match(/^\d{4}-\d{2}-\d{2}$/)?.[0];
+
 function todayLocalMidnight(){
+  if (PREVIEW_DATE) return parseLocalDate(PREVIEW_DATE);
   const t = new Date();
   return new Date(t.getFullYear(), t.getMonth(), t.getDate());
 }
