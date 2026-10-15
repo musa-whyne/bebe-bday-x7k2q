@@ -1,0 +1,2 @@
+Write night 1's note here.
+Line breaks you type are kept.

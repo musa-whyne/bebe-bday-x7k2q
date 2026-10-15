@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>For You</title> <!-- change "For You" to her name if you want -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Quicksand:wght@400;500;600;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="stars" aria-hidden="true"></div>
+
+  <!-- The opening question. Nothing else is visible until this is answered. -->
+  <div id="gate" class="gate">
+    <div class="gate-card">
+      <h1 id="gate-question" class="gate-question">Loading…</h1>
+      <input id="gate-input" class="gate-input" type="text" placeholder="your answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="go">
+      <button id="gate-submit" class="gate-button">Open</button>
+      <p id="gate-hint" class="gate-hint" role="status"></p>
+    </div>
+  </div>
+
+  <!-- The countdown itself, hidden until the gate is passed -->
+  <main id="main" class="main hidden">
+    <h1 class="title">10 nights until your birthday</h1>
+    <p class="subtitle">One heart for every night. A new one lights up each day — come back and see.</p>
+    <div id="hearts" class="hearts"></div>
+  </main>
+
+  <!-- Small speaker in the corner; appears once the song starts -->
+  <button id="mute-toggle" class="mute-toggle hidden" aria-label="Mute music">
+    <svg class="icon-sound" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <svg class="icon-muted" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+  </button>
+
+  <!-- What's inside an unlocked heart -->
+  <div id="keepsake" class="keepsake hidden">
+    <div class="keepsake-card">
+      <button id="keepsake-close" class="keepsake-close" aria-label="Close">&times;</button>
+
+      <!-- The polaroid: tap to flip between the photo and the note on its back -->
+      <div id="polaroid" class="polaroid" role="button" tabindex="0" aria-pressed="false" aria-label="Flip the photo over">
+        <div class="polaroid-inner">
+          <div class="polaroid-face polaroid-front">
+            <img id="keepsake-photo" src="" alt="">
+            <p class="polaroid-hint" aria-hidden="true">tap to flip &#8635;</p>
+          </div>
+          <div class="polaroid-face polaroid-back">
+            <p id="keepsake-note" class="keepsake-note"></p>
+          </div>
+        </div>
+      </div>
+
+      <button id="song-toggle" class="song-toggle">&#9654; play the song</button>
+    </div>
+  </div>
+
+  <!-- loop: the chosen night's song keeps playing until she pauses it or picks another heart -->
+  <audio id="audio-player" loop></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
