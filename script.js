@@ -18,8 +18,10 @@ const CONFIG = {
 
   // One entry per night. On each `date` that night's heart unlocks and
   // its `question` is the one she has to answer to get in that day.
-  // `answer` is not case-sensitive and extra spaces are ignored; to accept
-  // more than one answer use a list, e.g. answer: ["babe", "baby"].
+  // `answer` is not case-sensitive, and extra spaces and punctuation are
+  // ignored; to accept more than one answer use a list, e.g.
+  // answer: ["babe", "baby"]. For a date, dateAnswers(day, month) accepts
+  // every usual way of writing it ("7th sept", "september 7", "07/09"…).
   // `photo`, `song`, `note` are file paths — drop matching files into
   // assets/photos/, assets/audio/ and assets/notes/. A night's song starts
   // when she opens its heart. A note is a plain .txt file; line breaks in
@@ -28,8 +30,8 @@ const CONFIG = {
     {
       day: 1,
       date: '2026-10-16',
-      question: "What do I call you when it's just us?",
-      answer: "babe",
+      question: "What's the best day to be born?",
+      answer: dateAnswers(7, 9), // every way of writing 7th September
       photo: 'assets/photos/day1.jpg',
       song: 'assets/audio/day1.mp3',
       note: 'assets/notes/day1.txt',
@@ -134,6 +136,34 @@ function todayLocalMidnight(){
   return new Date(t.getFullYear(), t.getMonth(), t.getDate());
 }
 
+// Every usual way of writing a date as an answer, e.g. dateAnswers(7, 9):
+// "7th september", "sept 7", "the seventh of september", "07/09", "9-7"…
+// (punctuation is ignored when matching, so "07/09" is stored as "07 09").
+// Spelled-out days are only listed for dates in use; add more to WORDS.
+function dateAnswers(day, month){
+  const MONTHS = ['january','february','march','april','may','june','july',
+    'august','september','october','november','december'];
+  const WORDS = { 7: ['seven', 'seventh'] };
+  const suffix = (day % 100 >= 11 && day % 100 <= 13) ? 'th'
+    : ({ 1: 'st', 2: 'nd', 3: 'rd' }[day % 10] || 'th');
+  const name = MONTHS[month - 1];
+
+  const days = [String(day), day + suffix, String(day).padStart(2, '0'), ...(WORDS[day] || [])];
+  const months = [name, name.slice(0, 3), name.slice(0, 4)];
+  const numMonths = [String(month), String(month).padStart(2, '0')];
+
+  const out = new Set();
+  for (const d of days){
+    for (const m of months){
+      [`${d} ${m}`, `${m} ${d}`, `${d} of ${m}`, `the ${d} of ${m}`,
+       `${m} the ${d}`, `the ${d} ${m}`].forEach(a => out.add(a));
+    }
+    // Numbers only, either order (07/09 or 09/07)
+    if (/^\d/.test(d)) for (const n of numMonths){ out.add(`${d} ${n}`); out.add(`${n} ${d}`); }
+  }
+  return [...out];
+}
+
 // ---- starfield ----------------------------------------------------------
 function initStars(count = 60){
   const el = document.getElementById('stars');
@@ -168,7 +198,10 @@ function tonight(){
     || CONFIG.days[0];
 }
 
-function normalize(s){ return String(s).trim().toLowerCase(); }
+// Case, punctuation and spacing don't matter: "7th-Sept." -> "7th sept".
+function normalize(s){
+  return String(s).toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+}
 
 function tryUnlockGate(){
   const value = normalize(gateInput.value);
