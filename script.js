@@ -17,7 +17,7 @@ const CONFIG = {
   // nights without one use this.
   birthday: '2026-10-26',
   title: "{n} night{s} until your birthday",
-  subtitle: "One heart for every night. A new one lights up each day — come back and see.",
+  subtitle: "Until then, one little piece of us every night.",
 
   // Background song for the question screen and the hearts page. It starts
   // the first time she touches the page (browsers don't allow sound before
