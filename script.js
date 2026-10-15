@@ -13,6 +13,8 @@ const CONFIG = {
   // The heading counts down to her birthday by itself. {n} becomes the
   // number of nights left (10 on the 16th, 1 on the 25th) and {s} becomes
   // an "s" except when it's 1, so "{n} night{s}" reads "1 night".
+  // A night can have its own heading: add `title:` to it in `days` below;
+  // nights without one use this.
   birthday: '2026-10-26',
   title: "{n} night{s} until your birthday",
   subtitle: "One heart for every night. A new one lights up each day — come back and see.",
@@ -37,6 +39,7 @@ const CONFIG = {
     {
       day: 1,
       date: '2026-10-16',
+      title: "Frontal lobe fully loads in {n} nights",
       question: "What's the best day to be born?",
       answer: dateAnswers(7, 9), // every way of writing 7th September
       photo: 'assets/photos/day1.jpg',
@@ -296,7 +299,7 @@ function fillTitle(template, today){
 function renderHearts(){
   heartsEl.innerHTML = '';
   const today = todayLocalMidnight();
-  document.getElementById('title').textContent = fillTitle(CONFIG.title, today);
+  document.getElementById('title').textContent = fillTitle(tonight().title || CONFIG.title, today);
   document.getElementById('subtitle').textContent = CONFIG.subtitle;
   const unlockedNow = new Set();
 
