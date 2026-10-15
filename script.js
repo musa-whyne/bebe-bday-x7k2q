@@ -10,6 +10,13 @@ const CONFIG = {
   notYetMessage: "Not yet — come back on the 16th.",
   closedMessage: "Happy birthday. The rest is in person.",
 
+  // The heading counts down to her birthday by itself. {n} becomes the
+  // number of nights left (10 on the 16th, 1 on the 25th) and {s} becomes
+  // an "s" except when it's 1, so "{n} night{s}" reads "1 night".
+  birthday: '2026-10-26',
+  title: "{n} night{s} until your birthday",
+  subtitle: "One heart for every night. A new one lights up each day — come back and see.",
+
   // Background song for the question screen and the hearts page. It starts
   // the first time she touches the page (browsers don't allow sound before
   // that) and loops until she opens a heart, which switches to that
@@ -280,9 +287,17 @@ const CHAINS_SVG = `
 
 let unlockedBefore = null; // which nights were open at the last render
 
+// "{n} night{s} until…" -> "10 nights until…" / "1 night until…"
+function fillTitle(template, today){
+  const n = Math.round((parseLocalDate(CONFIG.birthday) - today) / 86400000);
+  return template.replaceAll('{n}', n).replaceAll('{s}', n === 1 ? '' : 's');
+}
+
 function renderHearts(){
   heartsEl.innerHTML = '';
   const today = todayLocalMidnight();
+  document.getElementById('title').textContent = fillTitle(CONFIG.title, today);
+  document.getElementById('subtitle').textContent = CONFIG.subtitle;
   const unlockedNow = new Set();
 
   CONFIG.days.forEach((day, i) => {
