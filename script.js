@@ -31,6 +31,9 @@ const CONFIG = {
   // ignored; to accept more than one answer use a list, e.g.
   // answer: ["babe", "baby"]. For a date, dateAnswers(day, month) accepts
   // every usual way of writing it ("7th sept", "september 7", "07/09"…).
+  // For a sentence, a pattern like /\bnever\b.*\blast\b/ accepts anything
+  // she types that fits it (checked against the lowercased, punctuation-
+  // free answer, so "don't" arrives as "don t").
   // `photo`, `song`, `note` are file paths — drop matching files into
   // assets/photos/, assets/audio/ and assets/notes/. A night's song starts
   // when she opens its heart. A note is a plain .txt file; line breaks in
@@ -70,8 +73,16 @@ const CONFIG = {
     {
       day: 3,
       date: '2026-10-18',
-      question: "Night 3's question here?",
-      answer: "answer3",
+      title: "{n} more days until you unlock 25+ reels",
+      question: "What's the most important point to remember while hiking to Beyal Camp at midnight?",
+      // "never be the last person while trekking", or any way of saying it:
+      // never/don't/not + last/behind/back ("don't be the last one",
+      // "never fall behind"), or staying in front/ahead/in the middle
+      answer: [
+        "never be the last person while trekking",
+        /\b(never|dont|don t|do not|not|avoid|no)\b.*\b(last|behind|back)\b/,
+        /\b(stay|be|walk|keep|trek|hike)\b.*\b(front|ahead|middle)\b/,
+      ],
       photo: 'assets/photos/day3.jpg',
       song: 'assets/audio/day3.mp3',
       note: 'assets/notes/day3.txt',
@@ -245,11 +256,12 @@ function normalize(s){
 function tryUnlockGate(){
   const value = normalize(gateInput.value);
   const night = tonight();
-  const answers = [].concat(night.answer).map(normalize);
+  const correct = [].concat(night.answer).some(a =>
+    a instanceof RegExp ? a.test(value) : normalize(a) === value);
 
   if (value.length === 0) return;
 
-  if (answers.includes(value)){
+  if (correct){
     gate.classList.add('gate-hidden');
     setTimeout(() => gate.classList.add('hidden'), 700);
     main.classList.remove('hidden');
