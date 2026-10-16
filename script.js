@@ -49,8 +49,20 @@ const CONFIG = {
     {
       day: 2,
       date: '2026-10-17',
-      question: "Night 2's question here?",
-      answer: "answer2",
+      title: "{n} more sleeps until it's your day",
+      question: "What's the best place to have chai in Lahore?",
+      // every way of writing Wazir Khan Mosque, with or without "the",
+      // "outside", "masjid", "lahore" and the usual spellings
+      answer: [
+        ...combos(['', 'the', 'outside', 'outside the'],
+                  ['wazir khan', 'wazirkhan', 'wazeer khan', 'wazir khans', 'wazir khan s'],
+                  ['', 'mosque', 'masjid', 'ki masjid'],
+                  ['', 'lahore']),
+        ...combos(['', 'the', 'outside', 'outside the'],
+                  ['masjid', 'masjid e', 'mosque', 'mosque of'],
+                  ['wazir khan', 'wazirkhan', 'wazeer khan'],
+                  ['', 'lahore']),
+      ],
       photo: 'assets/photos/day2.jpg',
       song: 'assets/audio/day2.mp3',
       note: 'assets/notes/day2.txt',
@@ -178,6 +190,17 @@ function dateAnswers(day, month){
     if (/^\d/.test(d)) for (const n of numMonths){ out.add(`${d} ${n}`); out.add(`${n} ${d}`); }
   }
   return [...out];
+}
+
+// Every combination of one word/phrase from each list, joined with spaces;
+// '' in a list means "this part is optional". For example
+// combos(['', 'the'], ['big', 'small'], ['house']) gives
+// "big house", "small house", "the big house", "the small house".
+function combos(...lists){
+  return lists.reduce(
+    (acc, list) => acc.flatMap(a => list.map(b => [a, b].filter(Boolean).join(' '))),
+    ['']
+  );
 }
 
 // ---- starfield ----------------------------------------------------------
