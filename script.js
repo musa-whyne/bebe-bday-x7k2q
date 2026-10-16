@@ -34,6 +34,7 @@ const CONFIG = {
   // For a sentence, a pattern like /\bnever\b.*\blast\b/ accepts anything
   // she types that fits it (checked against the lowercased, punctuation-
   // free answer, so "don't" arrives as "don t").
+  // `questionImage` (optional) shows a picture in a heart above the question.
   // `photo`, `song`, `note` are file paths — drop matching files into
   // assets/photos/, assets/audio/ and assets/notes/. A night's song starts
   // when she opens its heart. A note is a plain .txt file; line breaks in
@@ -90,8 +91,15 @@ const CONFIG = {
     {
       day: 4,
       date: '2026-10-19',
-      question: "Night 4's question here?",
-      answer: "answer4",
+      title: "{n} nights until you're 18 with 7 years of experience",
+      questionImage: 'assets/photos/day4_question.jpg', // shown in a heart above the question
+      question: "Who?",
+      // "us" anywhere in what she types ("us", "both of us", "it's us"),
+      // "we", or "you and me" / "musa and maryam" in any order
+      answer: [
+        /\b(us|we)\b/,
+        ...combos(['you', 'u', 'me', 'i', 'musa', 'maryam'], ['and', 'n', ''], ['you', 'u', 'me', 'i', 'musa', 'maryam']),
+      ],
       photo: 'assets/photos/day4.jpg',
       song: 'assets/audio/day4.mp3',
       note: 'assets/notes/day4.txt',
@@ -519,7 +527,14 @@ if (notYet || closed){
   gateInput.classList.add('hidden');
   gateSubmit.classList.add('hidden');
 } else {
-  gateQuestion.textContent = tonight().question;
+  const night = tonight();
+  gateQuestion.textContent = night.question;
+  if (night.questionImage){
+    const img = document.getElementById('gate-image');
+    img.src = night.questionImage;
+    img.alt = `Picture for night ${night.day}'s question`;
+    document.getElementById('gate-image-wrap').classList.remove('hidden');
+  }
   gateInput.focus();
 
   // Menu song on her first tap or key press anywhere — the earliest moment

@@ -15,6 +15,9 @@
   --font-display: "Fraunces", Georgia, serif;
   --font-body: "Quicksand", system-ui, sans-serif;
   --font-hand: "Caveat", cursive;
+
+  /* the heart shape, used to cut out the hearts and the question picture */
+  --heart-shape: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 29'%3E%3Cpath d='M16 29C7 22.5 0 16.7 0 9.8 0 4.4 4.1 0 9.3 0 12.4 0 15 1.5 16 3.9 17 1.5 19.6 0 22.7 0 27.9 0 32 4.4 32 9.8 32 16.7 25 22.5 16 29Z'/%3E%3C/svg%3E");
 }
 
 *{ box-sizing: border-box; }
@@ -77,6 +80,24 @@ html{
 @keyframes shake{
   25%{ transform: translateX(-6px); }
   75%{ transform: translateX(6px); }
+}
+
+/* A night's picture above its question, cut into a heart. The soft glow
+   goes on the wrapper because the mask would clip it off the image. */
+.gate-image-wrap{
+  width: min(240px, 62vw);
+  margin: 0 auto 22px;
+  filter: drop-shadow(0 0 14px rgba(217,140,147,0.45));
+}
+.gate-image{
+  display: block;
+  width: 100%;
+  aspect-ratio: 32 / 29; /* same proportions as the heart */
+  object-fit: cover;
+  -webkit-mask-image: var(--heart-shape);
+  mask-image: var(--heart-shape);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
 }
 
 .gate-question{
@@ -193,8 +214,8 @@ html{
   position: absolute;
   inset: 0;
   background-color: var(--rose-dim);
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 29'%3E%3Cpath d='M16 29C7 22.5 0 16.7 0 9.8 0 4.4 4.1 0 9.3 0 12.4 0 15 1.5 16 3.9 17 1.5 19.6 0 22.7 0 27.9 0 32 4.4 32 9.8 32 16.7 25 22.5 16 29Z'/%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 29'%3E%3Cpath d='M16 29C7 22.5 0 16.7 0 9.8 0 4.4 4.1 0 9.3 0 12.4 0 15 1.5 16 3.9 17 1.5 19.6 0 22.7 0 27.9 0 32 4.4 32 9.8 32 16.7 25 22.5 16 29Z'/%3E%3C/svg%3E");
+  -webkit-mask-image: var(--heart-shape);
+  mask-image: var(--heart-shape);
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   -webkit-mask-size: contain;
