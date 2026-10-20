@@ -396,6 +396,7 @@ function renderHearts(){
       <span class="heart-date"><span class="heart-day">${dayLabel}</span><span class="heart-month">${month}</span></span>`;
 
     if (unlocked){
+      preloadPhoto(day.photo);
       btn.addEventListener('click', () => openKeepsake(day));
     }
     heartsEl.appendChild(btn);
@@ -423,6 +424,27 @@ const audioPlayer = document.getElementById('audio-player');
 const PLACEHOLDER_PHOTO = 'assets/photos/placeholder.svg';
 keepsakePhoto.addEventListener('error', () => {
   if (!keepsakePhoto.src.endsWith(PLACEHOLDER_PHOTO)) keepsakePhoto.src = PLACEHOLDER_PHOTO;
+});
+
+// A landscape photo is shown wide and uncropped (see .is-landscape in
+// style.css); portrait ones keep the usual polaroid frame. Unlocked photos
+// are loaded in the background when the hearts are drawn, so their shape is
+// usually known before she opens one and the card doesn't jump.
+const keepsakeCard = keepsake.querySelector('.keepsake-card');
+const photoRatios = {}; // photo path -> width / height
+function preloadPhoto(src){
+  if (photoRatios[src]) return;
+  const img = new Image();
+  img.onload = () => { photoRatios[src] = img.naturalWidth / img.naturalHeight; };
+  img.src = src;
+}
+function fitPhoto(ratio){
+  const landscape = ratio > 1;
+  keepsakeCard.classList.toggle('is-landscape', landscape);
+  if (landscape) keepsakeCard.style.setProperty('--photo-ratio', ratio);
+}
+keepsakePhoto.addEventListener('load', () => {
+  fitPhoto(keepsakePhoto.naturalWidth / keepsakePhoto.naturalHeight);
 });
 
 // Notes live in their own .txt files, fetched the first time a heart is
@@ -460,6 +482,7 @@ polaroid.addEventListener('keydown', (e) => {
 function openKeepsake(day){
   setFlipped(false); // every card opens photo-side up
   polaroid.classList.remove('is-turning');
+  fitPhoto(photoRatios[day.photo] || 0); // known shape now, or on load
   keepsakePhoto.src = day.photo;
   keepsakePhoto.alt = `Photo from night ${day.day}`;
   keepsakeNote.textContent = '';

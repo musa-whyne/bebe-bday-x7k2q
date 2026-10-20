@@ -311,6 +311,8 @@ html{
   margin: auto; /* centres it, but scrolls from the top when too tall */
   padding-top: 44px; /* room for the close button above the polaroid */
 }
+/* a landscape photo gets a wider card (still full width on a phone) */
+.keepsake-card.is-landscape{ max-width: 540px; }
 
 .keepsake-close{
   position: absolute;
@@ -373,6 +375,11 @@ html{
   object-fit: cover;
   background: #e7ded0;
 }
+/* Landscape photos keep their own shape instead of being cut down to a
+   portrait frame, so nothing is cropped. --photo-ratio is set in script.js. */
+.is-landscape .polaroid-front img{ aspect-ratio: var(--photo-ratio, 4 / 3); }
+/* the back is as short as the front here, so give the note a bit more room */
+.is-landscape .polaroid-back{ padding: 18px 22px; }
 .polaroid-hint{
   margin: 0;
   height: 62px;
