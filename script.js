@@ -107,8 +107,13 @@ const CONFIG = {
     {
       day: 5,
       date: '2026-10-20',
-      question: "Night 5's question here?",
-      answer: "answer5",
+      title: "{n} nights to go, not that I'm counting (I'm counting)",
+      question: "Gaari mein chupa chups khaatay huay kya kerna chahiye?",
+      // "bicep flex" or anything with flex in it ("flex karna", "flexing"),
+      // biceps on their own, or the Urdu "dolay"
+      answer: [
+        /\b(flex\w*|biceps?|dol[ae]y?|muscles?)\b/,
+      ],
       photo: 'assets/photos/day5.jpg',
       song: 'assets/audio/day5.mp3',
       note: 'assets/notes/day5.txt',
@@ -116,8 +121,13 @@ const CONFIG = {
     {
       day: 6,
       date: '2026-10-21',
-      question: "Night 6's question here?",
-      answer: "answer6",
+      title: "{n} nights until half of your life has passed ;-;",
+      question: "F-10 Lebanese shawarma kisko sath le ke jana chahiye?",
+      // "sirat uncle", "uncle sirat", or just "sirat", in the usual
+      // spellings (seerat, sirrat, siraat)
+      answer: [
+        /\bs+[ei]+r+a+t+\b/,
+      ],
       photo: 'assets/photos/day6.jpg',
       song: 'assets/audio/day6.mp3',
       note: 'assets/notes/day6.txt',
@@ -125,8 +135,14 @@ const CONFIG = {
     {
       day: 7,
       date: '2026-10-22',
-      question: "Night 7's question here?",
-      answer: "answer7",
+      title: "{n} nights left and I'm running out of ways to keep this a secret",
+      question: "Ap dhilon aur mutahira ke ander kya aa gya?",
+      // "thori si daru" or any spelling of daru (daaru, thodi daru…),
+      // or sharab / alcohol / booze
+      answer: [
+        /\bd+a+r+u+\b/,
+        /\b(sh?a?r+a+b+|alcohol|booze)\b/,
+      ],
       photo: 'assets/photos/day7.jpg',
       song: 'assets/audio/day7.mp3',
       note: 'assets/notes/day7.txt',
@@ -134,8 +150,13 @@ const CONFIG = {
     {
       day: 8,
       date: '2026-10-23',
-      question: "Night 8's question here?",
-      answer: "answer8",
+      title: "Level 25 unlocks in {n} nights",
+      question: "What to do if there are no cameras in a lift?",
+      // "makeout", "make out", "making out", "made out", or kiss / smooch
+      answer: [
+        /\b(make|making|made|mak)\s?out\b/,
+        /\b(kiss|smooch)\w*\b/,
+      ],
       photo: 'assets/photos/day8.jpg',
       song: 'assets/audio/day8.mp3',
       note: 'assets/notes/day8.txt',
@@ -143,8 +164,12 @@ const CONFIG = {
     {
       day: 9,
       date: '2026-10-24',
-      question: "Night 9's question here?",
-      answer: "answer9",
+      title: "{n} nights. Start practising your surprised face",
+      question: "Which piece of jewellery i like the most on you?",
+      // jhumkay, jhumka, jhumke, jhumki, jumka, jhumkas…
+      answer: [
+        /\bj+h?u+m+k+[aeiy]+s?\b/,
+      ],
       photo: 'assets/photos/day9.jpg',
       song: 'assets/audio/day9.mp3',
       note: 'assets/notes/day9.txt',
@@ -152,8 +177,13 @@ const CONFIG = {
     {
       day: 10,
       date: '2026-10-25',
-      question: "Night 10's question here?",
-      answer: "answer10",
+      title: "{n} night until the best person I know turns 25",
+      question: "Which fruit doesn't go well with chocolate gelato and nuts?",
+      // banana(s) with the usual typos (bannana, bananna), or kela / kelay
+      answer: [
+        /\bb+a+n+a+n+a*s?\b/,
+        /\bk+e+l+[ae]+y?\b/,
+      ],
       photo: 'assets/photos/day10.jpg',
       song: 'assets/audio/day10.mp3',
       note: 'assets/notes/day10.txt',
